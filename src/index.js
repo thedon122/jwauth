@@ -23,3 +23,8 @@ server.use(
     credentials: true,
   }),
 );
+
+
+// Needed to be able to read body data
+server.use(express.json()); // to support JSON-encoded bodies
+server.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
