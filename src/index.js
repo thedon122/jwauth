@@ -28,3 +28,28 @@ server.use(
 // Needed to be able to read body data
 server.use(express.json()); // to support JSON-encoded bodies
 server.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
+
+// 1. Register a user
+server.post('/register', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // 1. Check if the user exist
+      const user = fakeDB.find(user => user.email === email);
+      if (user) throw new Error('User already exist');
+      // 2. If not user exist already, hash the password
+      const hashedPassword = await hash(password, 10);
+      // 3. Insert the user in "database"
+      fakeDB.push({
+        id: fakeDB.length,
+        email,
+        password: hashedPassword,
+      });
+      res.send({ message: 'User Created' });
+      console.log(fakeDB);
+    } catch (err) {
+      res.send({
+        error: `${err.message}`,
+      });
+    }
+  });
