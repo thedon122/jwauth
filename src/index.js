@@ -53,3 +53,15 @@ server.post('/register', async (req, res) => {
       });
     }
   });
+
+  // 2. Login a user
+server.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // 1. Find user in array. If not exist send error
+      const user = fakeDB.find(user => user.email === email);
+      if (!user) throw new Error('User does not exist');
+      // 2. Compare crypted password and see if it checks out. Send error if not
+      const valid = await compare(password, user.password);
+      if (!valid) throw new Error('Password not correct');
