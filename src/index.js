@@ -35,13 +35,13 @@ server.post('/register', async (req, res) => {
   
     try {
       // 1. Check if the user exist
-      const user = fakeDB.find(user => user.email === email);
+      const user = shortDB.find(user => user.email === email);
       if (user) throw new Error('User already exist');
       // 2. If not user exist already, hash the password
       const hashedPassword = await hash(password, 10);
       // 3. Insert the user in "database"
-      fakeDB.push({
-        id: fakeDB.length,
+      shortDB.push({
+        id: shortDB.length,
         email,
         password: hashedPassword,
       });
@@ -60,7 +60,7 @@ server.post('/login', async (req, res) => {
   
     try {
       // 1. Find user in array. If not exist send error
-      const user = fakeDB.find(user => user.email === email);
+      const user = shortDB.find(user => user.email === email);
       if (!user) throw new Error('User does not exist');
       // 2. Compare crypted password and see if it checks out. Send error if not
       const valid = await compare(password, user.password);
