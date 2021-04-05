@@ -1,6 +1,6 @@
 const { sign } = require('jsonwebtoken');
 
-comst createAccessToken = userID => {
+const createAccessToken = userID => {
     return sign({ userID }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: '15m',
     })
@@ -12,7 +12,23 @@ const createRefreshToken = userID => {
     })
 };
 
+const sendAccessToken = (res, req, accesstoken) => {
+    res.send({
+        accesstoken,
+        email: req.body.email,
+    })
+};
+
+const sendRefreshToken = (res, refreshtoken) => {
+    res.cookie('refreshtoken', token, {
+        httpOnly: true,
+        path: '/refresh_token'
+    })
+};
+
 module.export = {
     createAccessToken,
     createRefreshToken,
+    sendAccessToken,
+    sendRefreshToken,
 };
