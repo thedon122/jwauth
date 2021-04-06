@@ -4,7 +4,12 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { verify } = require('jsonwebtoken');
 const { hash, compare } = require('bcryptjs');
-const { createAccessToken, createRefreshToken } = require('./tokens.js');
+const { 
+  createAccessToken, 
+  createRefreshToken,
+  sendAccessToken,
+  sendRefreshToken 
+} = require('./tokens.js');
 const { shortDB } = require('./shortDB.js')
 
 // 1. Register a user
@@ -82,3 +87,15 @@ server.post('/login', async (req, res) => {
     });
   }
 });
+
+// 3. Logout a user
+server.post('/logout', (_req, res)=> {
+  res.clearCookie('refreshtoken');
+  return res.send({
+    message: 'Logged out',
+  })
+});
+
+server.listen(process.env.PORT, () =>
+  console.log(`Server listening on port ${process.env.PORT}`),
+);
