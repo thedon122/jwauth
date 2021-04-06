@@ -10,7 +10,8 @@ const {
   sendAccessToken,
   sendRefreshToken 
 } = require('./tokens.js');
-const { shortDB } = require('./shortDB.js')
+const { shortDB } = require('./shortDB.js');
+const { isAuth } = require('./isAuth');
 
 // 1. Register a user
 // 2. Login a user
@@ -100,10 +101,17 @@ server.post('/logout', (_req, res)=> {
 server.post('/protected', async (req, res)=> {
   try {
     const userID = isAuth(req)
+    if (userId !== null){
+      res.send({
+        data: 'This is protected data.',
+      })
+    }
   } catch (err) {
-    
+    res.send({
+      error: `{err.message}`,
+    });
   }
-})
+});
 
 server.listen(process.env.PORT, () =>
   console.log(`Server listening on port ${process.env.PORT}`),
