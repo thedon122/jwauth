@@ -96,6 +96,15 @@ server.post('/logout', (_req, res)=> {
   })
 });
 
+// 4. Protected route
+server.post('/protected', async (req, res)=> {
+  try {
+    const userID = isAuth(req)
+  } catch (err) {
+    
+  }
+})
+
 server.listen(process.env.PORT, () =>
   console.log(`Server listening on port ${process.env.PORT}`),
 );
