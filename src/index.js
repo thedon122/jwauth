@@ -53,7 +53,6 @@ server.post('/register', async (req, res) => {
         password: hashedPassword,
       });
       res.send({ message: 'User Created' });
-      console.log(fakeDB);
     } catch (err) {
       res.send({
         error: `${err.message}`,
@@ -91,7 +90,7 @@ server.post('/login', async (req, res) => {
 
 // 3. Logout a user
 server.post('/logout', (_req, res)=> {
-  res.clearCookie('refreshtoken');
+  res.clearCookie('refreshtoken', { path: '/refresh_token'});
   return res.send({
     message: 'Logged out',
   })
@@ -125,6 +124,21 @@ server.post('/refresh_token', (req, res) => {
   } catch (err) {
     return res.send({ accesstoken: '' });
   }
+  // Token is valid, check if user exist
+  const user = shortDB.find(user => user.id === payload.userId);
+  if (!user) return res.send({ accesstoken: ''});
+  // User exist, check if refreshtoken exist on user
+  if (user.refreshtoken !== token) {
+    return res.send({ accesstoken: ''});
+  }
+  // Token exist, create new Refresh and Accesstoken
+  const accesstoken = createAccessToken(user.id);
+  const refreshtoken = createRefreshToken(user.id);
+  user.refreshtoken = refreshtoken;
+  
+  sendRefreshToken(res, refreshtoken);
+  return res.send({ accesstoken });
+  
 });
 server.listen(process.env.PORT, () =>
   console.log(`Server listening on port ${process.env.PORT}`),
