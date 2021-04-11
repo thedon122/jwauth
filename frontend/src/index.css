@@ -39,3 +39,20 @@ body {
   display: block;
   padding: 20px;
 }
+
+ul {
+  list-style-type: none;
+  margin: 40px auto;
+  width: 300px;
+  padding: 0;
+}
+
+ul li {
+  display: inline-block;
+  margin: 10px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
