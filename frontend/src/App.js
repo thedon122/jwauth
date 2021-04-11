@@ -11,11 +11,19 @@ export const UserContext = React.createContext([]);
 
 
 function App() {
-  return (
-    <div className="App">
-      App
-    </div>
-  );
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const logOutCallback = async () => {
+    await fetch('http://localhost:4000/logout', {
+      method: 'POST',
+      credentials: 'include', // Needed to include the cookie
+    });
+    // Clear user from context
+    setUser({});
+    // Navigate back to startpage
+    navigate('/');
+  }
 }
 
 export default App;
