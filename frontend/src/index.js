@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Router, navigate } from '@reach/router';
-
-import Navigation from './components/Navigation';
-import Login from './components/Login';
-import Register from './components/Register';
-import Protected from './components/Protected';
-import Content from './components/Content';
-
-export const UserContext = React.createContext([]);
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
