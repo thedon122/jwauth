@@ -24,6 +24,19 @@ function App() {
     // Navigate back to startpage
     navigate('/');
   }
+  return (
+    <UserContext.Provider value={[user, setUser]}>
+      <div className="App">
+        <Navigation logOutCallback={logOutCallback} />
+        <Router id="router">
+          <Login path="login" />
+          <Register path="register" />
+          <Protected path="protected" />
+          <Content path="/" />
+        </Router>
+      </div>
+    </UserContext.Provider>
+  );
 }
 
 export default App;
