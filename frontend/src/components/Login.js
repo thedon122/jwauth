@@ -8,17 +8,47 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleSubmit = async e => {
-
+        e.preventDefault();
+    const result = await (await fetch('http://localhost:4000/login', {
+      method: 'POST',
+      credentials: 'include', // Needed to include the cookie
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })).json();
+    
+    if (result.accesstoken) {
+      setUser({
+        accesstoken: result.accesstoken,
+      });
+      navigate('/');
+    } else {
+      console.log(result.error);
     }
+  };
+
+  useEffect(() => {
+    console.log(user)
+  }, [user])
 
     const handleChange = e => {
-
+        if (e.currentTarget.name === 'email' ) {
+            setEmail(e.currentTarget.value);
+        }   else {
+            setPassword(e.currentTarget.value);
+            }
+        }
     }
 
     return (
         <div className="login-wrapper">
             <form onSubmit={handleSubmit}>
                 <h2>Login</h2>
+                <div className="login-input">
                 <input
                 value={email}
                 onChange={handleChange}
@@ -33,8 +63,11 @@ const Login = () => {
                 type="text"
                 name="password"
                 placeholder="Password"
-                autoComplete="password"
+                autoComplete="current-password"
                 />
+                <button type="submit">Login</button>
+                </div>
+                
             </form>
         </div>
     )
