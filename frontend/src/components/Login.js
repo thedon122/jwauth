@@ -40,15 +40,14 @@ const Login = () => {
             setEmail(e.currentTarget.value);
         }   else {
             setPassword(e.currentTarget.value);
-            }
         }
-    }
+    };
 
     return (
         <div className="login-wrapper">
             <form onSubmit={handleSubmit}>
-                <h2>Login</h2>
-                <div className="login-input">
+            <h2>Login</h2>
+            <div className="login-input">
                 <input
                 value={email}
                 onChange={handleChange}
@@ -66,11 +65,10 @@ const Login = () => {
                 autoComplete="current-password"
                 />
                 <button type="submit">Login</button>
-                </div>
-                
-            </form>
-        </div>
-    )
-}
+            </div>
+        </form>
+      </div>
+    );
+};
 
 export default Login;
