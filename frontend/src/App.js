@@ -19,28 +19,31 @@ function App() {
       method: 'POST',
       credentials: 'include', // Needed to include the cookie
     });
-    // First thing, get a new accesstoken if a refreshtoken exist
-    useEffect(() => {
-      async function checkRefreshToken() {
-        const result = await (await fetch('http://localhost:4000/refresh_token', {
-          method: 'Post',
-          credentials: 'include', // Needed to include the cookie
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })).json();
-        setUser({
-          accesstoken: result.accesstoken,
-        });
-        setLoading(false);
-      }
-      checkRefreshToken();
-    }, []);
-    if (loading) return <div>'Loading...'</div>
     // Clear user from context
+    setUser({});
     // Navigate back to startpage
     navigate('/');
   }
+  // First thing, get a new accesstoken if a refreshtoken exist
+  useEffect(() => {
+    async function checkRefreshToken() {
+      const result = await (await fetch('http://localhost:4000/refresh_token', {
+        method: 'Post',
+        credentials: 'include', // Needed to include the cookie
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })).json();
+      setUser({
+        accesstoken: result.accesstoken,
+      });
+      setLoading(false);
+    }
+    checkRefreshToken();
+  }, []);
+
+  if (loading) return <div>Loading...</div>
+  
   return (
     <UserContext.Provider value={[user, setUser]}>
       <div className="App">
